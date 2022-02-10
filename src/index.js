@@ -4,7 +4,20 @@ const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('../config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_MESSAGE_TYPING,
+        Intents.FLAGS.DIRECT_MESSAGES,
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Intents.FLAGS.DIRECT_MESSAGE_TYPING,
+
+    ],
+    partials: [
+        'CHANNEL', // Required to receive DMs
+    ] });
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
@@ -25,10 +38,11 @@ for (const file of eventFiles) {
 }
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand() && !interaction.isButton()) return;
+    if (!interaction.isCommand() && !interaction.isButton() && !interaction.isSelectMenu()) return;
 
     const command = client.commands.get(interaction.commandName);
-    console.log('Interaction#', interaction);
+
+    // console.log('Interaction#', interaction);
     if (!command) return;
 
     try {
