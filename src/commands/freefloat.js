@@ -1,3 +1,4 @@
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, WebhookClient } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { request } = require('undici');
 
@@ -17,11 +18,19 @@ module.exports = {
         };
 
         const catResult = await request('https://app.x51.vn/api/ext/data-by-tickers', opts);
-        let fullBody = '';
+        let tickerInfos = '';
         for await (const data of catResult.body) {
-            fullBody += data.toString();
+            tickerInfos += data.toString();
         }
-        fullBody = JSON.parse(fullBody)[0];
-        return interaction.reply(`free-float of ${ticker}: ${fullBody.freeTransferRate}`);
+        tickerInfos = JSON.parse(tickerInfos)[0];
+
+        const msgInfos = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(`Ticker Information: ${ticker}`)
+            .setDescription(`Free-float: ${tickerInfos.freeTransferRate}\n`)
+            .addField("FA", `PE: ${tickerInfos.pe}, PB: ${tickerInfos.pb}`)
+            .setTimestamp();
+
+        return interaction.reply({ embeds: [msgInfos], components: [], ephemeral: false});
     }
 };
