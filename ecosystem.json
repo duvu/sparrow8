@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "sparrow8",
+      "cwd": ".",
+      "script": "src/index.js",
+      "args": "",
+      "watch": false,
+      "max_memory_restart": "250M"
+    }
+  ]
+}

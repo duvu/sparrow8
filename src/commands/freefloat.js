@@ -22,13 +22,20 @@ module.exports = {
         for await (const data of catResult.body) {
             tickerInfos += data.toString();
         }
+        console.log(tickerInfos);
         tickerInfos = JSON.parse(tickerInfos)[0];
+        const taSignalText = tickerInfos.tcbsBuySellSignal ? tickerInfos.tcbsBuySellSignal['vi'] : '';
+        const foreignText = tickerInfos.foreignTransaction ? tickerInfos.foreignTransaction['vi'] : '';
+        const exchangeText = tickerInfos.exchangeName ? tickerInfos.exchangeName['vi'] : '';
+        const industryText = tickerInfos.industryName ? tickerInfos.industryName['vi'] : '';
 
         const msgInfos = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(`Ticker Information: ${ticker}`)
+            .setTitle(`Thông tin cổ phiếu: ${ticker} (${industryText} : ${exchangeText})`)
             .setDescription(`Free-float: ${tickerInfos.freeTransferRate}\n`)
-            .addField("FA", `PE: ${tickerInfos.pe}, PB: ${tickerInfos.pb}`)
+            .addField("Chỉ số tài chính", `PE: ${tickerInfos.pe}, PB: ${tickerInfos.pb}, EPS: ${tickerInfos.eps}, ROE: ${tickerInfos.roe}\n Vốn hóa: ${tickerInfos.marketCap}`)
+            .addField('Nhà đầu tư nước ngoài', `${foreignText}`)
+            .addField('Tín hiệu kĩ thuật', `${taSignalText}`)
             .setTimestamp();
 
         return interaction.reply({ embeds: [msgInfos], components: [], ephemeral: false});
