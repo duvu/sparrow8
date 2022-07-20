@@ -7,6 +7,15 @@
       "args": "",
       "watch": false,
       "max_memory_restart": "250M"
+    },
+    {
+      "name": "X8.B3t",
+      "cwd": ".",
+      "script": "src/webhook/index.js",
+      "args": "",
+      "watch": false,
+      "max_memory_restart": "250M"
     }
+
   ]
 }

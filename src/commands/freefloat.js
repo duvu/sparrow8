@@ -9,7 +9,8 @@ module.exports = {
         .addStringOption(option => option.setName('ticker').setDescription('The ticker to search for free-float')),
 
     async execute(interaction) {
-        const ticker = interaction.options.getString('ticker').toUpperCase();
+        let ticker = interaction.options.getString('ticker');
+        ticker = ticker ? ticker.toUpperCase() : 'FPT';
 
         const opts = {
             body: `{\"tickers\": [ \"${ticker}\" ]}`,
@@ -24,10 +25,10 @@ module.exports = {
         }
         console.log(tickerInfos);
         tickerInfos = JSON.parse(tickerInfos)[0];
-        const taSignalText = tickerInfos.tcbsBuySellSignal ? tickerInfos.tcbsBuySellSignal['vi'] : '';
-        const foreignText = tickerInfos.foreignTransaction ? tickerInfos.foreignTransaction['vi'] : '';
-        const exchangeText = tickerInfos.exchangeName ? tickerInfos.exchangeName['vi'] : '';
-        const industryText = tickerInfos.industryName ? tickerInfos.industryName['vi'] : '';
+        const taSignalText = tickerInfos.tcbsBuySellSignal ? tickerInfos.tcbsBuySellSignal['vi'] : 'None';
+        const foreignText = tickerInfos.foreignTransaction ? tickerInfos.foreignTransaction['vi'] : 'None';
+        const exchangeText = tickerInfos.exchangeName ? tickerInfos.exchangeName['vi'] : 'None';
+        const industryText = tickerInfos.industryName ? tickerInfos.industryName['vi'] : 'None';
 
         const msgInfos = new MessageEmbed()
             .setColor('#0099ff')
