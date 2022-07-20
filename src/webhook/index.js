@@ -4,6 +4,7 @@ const { request } = require('undici');
 
 const index = new WebhookClient({ id: webhookId, token: webhookToken });
 //https://discord.com/api/webhooks/934672704055951410/ixzZ0bhoKS6te-5ktoNYE4_rSq9lYk9QBj4_bD5CpH_kFGFtMQzRfjlAYHiMh1MJpURV
+// https://discord.com/api/webhooks/999197746772856922/xS5fTU-W7BjOKSnWI2qW-vq4uBguIaae39Bl2LG0VbmlUmV_ZreW2SbTxEwIne_J1_RS
 
 function strip(html){
     return html.replace(/(<([^>]+)>)/gi, "");
@@ -15,7 +16,7 @@ async function loadB3T() {
         headers,
         trailers,
         body
-    } = await request('https://app.x51.vn/api/me/b3tx8')
+    } = await request('https://app.x51.vn/api/me/b3tx8');
 
     let dataResp = '';
     for await (const data of body) {
@@ -26,7 +27,8 @@ async function loadB3T() {
 
     if (dataJson.length > 0) {
         for (const b3t of dataJson) {
-            const content = strip(b3t.content).substring( 0, str.indexOf( "———–" ) );
+            let content = strip(b3t.content);
+            content = content.substring( 0, content.indexOf( "———–" ));
             if (content.length > 4096) {
                 for (let i = 0; i < content.length; i+=4096) {
                     const b3tCt = content.slice(i, i+4096);
@@ -44,8 +46,8 @@ async function loadB3T() {
 
                     await index.send({
                         // content: b3t.content,
-                        username: 'B3T',
-                        avatarURL: 'https://i.imgur.com/AfFp7pu.png',
+                        username: 'X8.B3t',
+                        avatarURL: 'https://bit.ly/3yOk5zM',
                         embeds: [embed],
                     });
                 }
@@ -61,7 +63,7 @@ async function loadB3T() {
                 await index.send({
                     // content: b3t.content,
                     username: 'X8.B3t',
-                    avatarURL: 'https://i.imgur.com/AfFp7pu.png',
+                    avatarURL: 'https://bit.ly/3yOk5zM',
                     embeds: [embed],
                 });
             }
