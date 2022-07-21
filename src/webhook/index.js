@@ -27,12 +27,12 @@ async function loadB3T() {
     console.log('X8.B3t', dataJson.length);
     if (dataJson.length > 0) {
         for (const b3t of dataJson) {
-            let content = convert(b3t.content);
-            if (b3t.source === 'VND') {
-                content = content.substring( 0, content.indexOf( "———–" ));
-            } else if (b3t.source === 'CSI') {
-                content = content.substring(0, content.indexOf("-----------------"))
-            }
+            let content = convert(b3t.content, {wordwrap: false});
+            // if (b3t.source === 'VND') {
+            //     content = content.substring( 0, content.indexOf( "———–" ));
+            // } else if (b3t.source === 'CSI') {
+            //     content = content.substring(0, content.indexOf("-----------------"))
+            // }
 
             if (content.length > 4096) {
                 for (let i = 0; i < content.length; i+=4096) {
