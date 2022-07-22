@@ -29,6 +29,8 @@ module.exports = {
         const foreignText = tickerInfos.foreignTransaction ? tickerInfos.foreignTransaction['vi'] : 'None';
         const exchangeText = tickerInfos.exchangeName ? tickerInfos.exchangeName['vi'] : 'None';
         const industryText = tickerInfos.industryName ? tickerInfos.industryName['vi'] : 'None';
+        const suddenlyHighVolumeMatching = tickerInfos.suddenlyHighVolumeMatching ? tickerInfos.suddenlyHighVolumeMatching : 'None';
+        const forecastVolumeRatio = tickerInfos.forecastVolumeRatio ? tickerInfos.forecastVolumeRatio : 'None';
 
         const msgInfos = new MessageEmbed()
             .setColor('#0099ff')
@@ -37,6 +39,8 @@ module.exports = {
             .addField("Chỉ số tài chính", `PE: ${tickerInfos.pe}, PB: ${tickerInfos.pb}, EPS: ${tickerInfos.eps}, ROE: ${tickerInfos.roe}\n Vốn hóa: ${tickerInfos.marketCap}`)
             .addField('Nhà đầu tư nước ngoài', `${foreignText}`)
             .addField('Tín hiệu kĩ thuật', `${taSignalText}`)
+            .addField('Tốc độ khớp lệnh so với trung bình 5 phiên', `${suddenlyHighVolumeMatching}`)
+            .addField('Khối lượng dự kiến so với trung bình 5 phiên', `${forecastVolumeRatio}`)
             .setTimestamp();
 
         return interaction.reply({ embeds: [msgInfos], components: [], ephemeral: false});
