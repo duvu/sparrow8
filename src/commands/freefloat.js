@@ -11,20 +11,8 @@ module.exports = {
     async execute(interaction) {
         let ticker = interaction.options.getString('ticker');
         ticker = ticker ? ticker.toUpperCase() : 'FPT';
+        let tickerInfos = await this.getJson(ticker);
 
-        const opts = {
-            body: `{\"tickers\": [ \"${ticker}\" ]}`,
-            method: "POST",
-            headers: {"content-type": "application/json"}
-        };
-
-        const catResult = await request('https://app.x51.vn/api/ext/data-by-tickers', opts);
-        let tickerInfos = '';
-        for await (const data of catResult.body) {
-            tickerInfos += data.toString();
-        }
-        console.log(tickerInfos);
-        tickerInfos = JSON.parse(tickerInfos)[0];
         const taSignalText = tickerInfos.tcbsBuySellSignal ? tickerInfos.tcbsBuySellSignal['vi'] : 'None';
         const foreignText = tickerInfos.foreignTransaction ? tickerInfos.foreignTransaction['vi'] : 'None';
         const exchangeText = tickerInfos.exchangeName ? tickerInfos.exchangeName['vi'] : 'None';
@@ -44,5 +32,25 @@ module.exports = {
             .setTimestamp();
 
         return interaction.reply({ embeds: [msgInfos], components: [], ephemeral: false});
+    },
+
+    async getJson(ticker) {
+        const opts = {
+            body: `{\"tickers\": [ \"${ticker}\" ]}`,
+            method: "POST",
+            headers: {"content-type": "application/json"}
+        };
+
+        const catResult = await request('https://app.x51.vn/api/ext/data-by-tickers', opts);
+        let tickerInfos = '';
+        for await (const data of catResult.body) {
+            tickerInfos += data.toString();
+        }
+        console.log(tickerInfos);
+        try {
+            return JSON.parse(tickerInfos)[0];
+        } catch (e) {
+            return undefined
+        }
     }
 };
