@@ -63,7 +63,7 @@ module.exports = {
                 .setColor("#0099ff")
                 .setURL(info.reportLink)
                 .setTitle(title)
-                .setFooter({text: `Updated by ${info.manualEntryBy} - Entry Age: ${info.entryAge} days`});
+                .setFooter({text: `Entry Age: ${info.entryAge} days`});
 
             if (info.notes) {
                 msg.setDescription(`${info.notes}`)
